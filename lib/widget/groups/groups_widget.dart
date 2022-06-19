@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class GroupsWidget extends StatelessWidget {
   const GroupsWidget({Key? key}) : super(key: key);
+
+  void showForm(BuildContext context) {
+    Navigator.of(context).pushNamed('/groups/form');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,8 +14,10 @@ class GroupsWidget extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Groups'),
       ),
-      body: const SafeArea(
-        child: _GroupListWidget(),
+      body: const _GroupListWidget(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showForm(context),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -29,7 +36,7 @@ class _GroupListWidgetState extends State<_GroupListWidget> {
     return ListView.separated(
       itemCount: 100,
       separatorBuilder: (BuildContext context, int index) {
-        return const _GroupListRowWidget();
+        return _GroupListRowWidget(indexInList: index);
       },
       itemBuilder: (BuildContext context, int index) {
         return const Divider(height: 1);
@@ -39,13 +46,30 @@ class _GroupListWidgetState extends State<_GroupListWidget> {
 }
 
 class _GroupListRowWidget extends StatelessWidget {
-  const _GroupListRowWidget({Key? key}) : super(key: key);
+  final int indexInList;
+
+  const _GroupListRowWidget({Key? key, required this.indexInList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('One-line with trailing widget'),
-      trailing: Icon(Icons.more_vert),
+    return Slidable(
+      actionPane: const SlidableDrawerActionPane(),
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Delete',
+          color: Colors.pink,
+          icon: Icons.delete,
+          onTap: () => () {},
+        ),
+      ],
+      child: ColoredBox(
+        color: Colors.white,
+        child: ListTile(
+          title: Text('One-line with trailing widget'),
+          trailing: Icon(Icons.chevron_right),
+        ),
+      ),
     );
   }
 }
