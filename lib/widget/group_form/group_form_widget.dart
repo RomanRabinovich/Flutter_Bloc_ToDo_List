@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_list_hive/widget/groups/groups_widget_model.dart';
+
+import 'group_form_widget_model.dart';
 
 class GroupFormWidget extends StatefulWidget {
   const GroupFormWidget({Key? key}) : super(key: key);
@@ -38,9 +39,10 @@ class _GroupFormWidgetBody extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              GroupFormWidgetModelProvider.read(context)?.model.saveGroup(),
-          child: Icon(Icons.done)),
+          onPressed: () => GroupFormWidgetModelProvider.read(context)
+              ?.model
+              .saveGroup(context),
+          child: const Icon(Icons.done)),
     );
   }
 }
@@ -50,10 +52,15 @@ class _GroupNameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TextField(
+    final model = GroupFormWidgetModelProvider.read(context)?.model;
+    return TextField(
       autofocus: true,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(), hintText: 'new group name'),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'new group name',
+      ),
+      onChanged: (value) => model?.groupName = value,
+      onEditingComplete: () => model?.saveGroup(context),
     );
   }
 }

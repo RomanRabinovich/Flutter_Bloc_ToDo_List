@@ -11,10 +11,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       routes: {
-        '/groups/': (context) => const GroupsWidget(),
+        '/groups': (context) => const GroupsWidget(),
         '/groups/form': (context) => const GroupFormWidget(),
       },
-      initialRoute: '/groups/',
+      initialRoute: '/groups',
       theme: ThemeData(primarySwatch: Colors.pink),
     );
   }
